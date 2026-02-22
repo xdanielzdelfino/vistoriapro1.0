@@ -9,12 +9,16 @@ const validateEmail = (email) => {
 };
 
 const validatePassword = (password) => {
-  return password && password.length >= 8;
+  if (!password || password.length < 8) {
+    return false;
+  }
+  return true;
 };
 
 const validatePhone = (phone) => {
-  const re = /^(\([0-9]{2}\)|[0-9]{2}) ([0-9]{4}|[0-9]{3}) ([0-9]{4})[0-9]{0,1}$/;
-  return re.test(phone.replace(/\D/g, ''));
+  if (!phone) return false;
+  const re = /^\(?([0-9]{2})\)?\s?([0-9]{4,5})\-?([0-9]{4})$/;
+  return re.test(phone);
 };
 
 const validateCPF = (cpf) => {

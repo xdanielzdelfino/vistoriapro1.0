@@ -40,12 +40,8 @@ class Validator {
    * Valida senha
    */
   static validatePassword(password) {
-    if (!password) {
-      throw new ValidationError('password', 'Senha é obrigatória');
-    }
-
-    if (password.length < 8) {
-      throw new ValidationError('password', 'Senha deve ter no mínimo 8 caracteres');
+    if (!password || password.length < 8) {
+      return false;
     }
 
     // Opcional: validar complexidade
@@ -55,10 +51,7 @@ class Validator {
       const hasNumbers = /\d/.test(password);
 
       if (!hasUppercase || !hasLowercase || !hasNumbers) {
-        throw new ValidationError(
-          'password',
-          'Senha deve conter maiúsculas, minúsculas e números'
-        );
+        return false;
       }
     }
 
@@ -73,11 +66,11 @@ class Validator {
       return false;
     }
 
-    const phoneRegex = /^(\([0-9]{2}\)|[0-9]{2})\s?([0-9]{4}|[0-9]{3})\s?([0-9]{4})[0-9]{0,1}$/;
+    const phoneRegex = /^\(?([0-9]{2})\)?\s?([0-9]{4,5})\-?([0-9]{4})$/;
     const cleanPhone = phone.replace(/\D/g, '');
 
     if (cleanPhone.length < 10 || cleanPhone.length > 11) {
-      throw new ValidationError('phone', 'Telefone inválido');
+      return false;
     }
 
     return phoneRegex.test(phone) || /^\d{10,11}$/.test(cleanPhone);

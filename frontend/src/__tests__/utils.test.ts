@@ -24,12 +24,17 @@ export const formatCNPJ = (cnpj: string): string => {
 };
 
 export const formatPhone = (phone: string): string => {
-  return phone
-    .replace(/\D/g, '')
-    .replace(/(\d{2})(\d)/, '($1) $2')
-    .replace(/(\d{4})(\d)/, '$1-$2')
-    .replace(/(-\d{4})(\d)/, '$1-$2')
-    .substring(0, 15);
+  const cleaned = phone.replace(/\D/g, '');
+  
+  if (cleaned.length === 10) {
+    // (XX) XXXX-XXXX
+    return cleaned.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+  } else if (cleaned.length === 11) {
+    // (XX) XXXXX-XXXX
+    return cleaned.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+  }
+  
+  return phone;
 };
 
 export const formatCurrency = (value: number): string => {
@@ -72,8 +77,11 @@ describe('Frontend Utilities', () => {
 
   describe('formatCurrency', () => {
     it('deve formatar valor monetário em reais', () => {
-      expect(formatCurrency(1000)).toBe('R$ 1.000,00');
-      expect(formatCurrency(1500.50)).toBe('R$ 1.500,50');
+      const result1 = formatCurrency(1000).replace(/\s/g, ' '); // Normalizar espaços
+      expect(result1).toBe('R$ 1.000,00');
+      
+      const result2 = formatCurrency(1500.50).replace(/\s/g, ' '); // Normalizar espaços
+      expect(result2).toBe('R$ 1.500,50');
     });
   });
 });
