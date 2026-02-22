@@ -29,9 +29,11 @@ RUN mkdir -p ./uploads/fotos
 # Expor porta
 EXPOSE 3000
 
-# Variáveis de ambiente padrão
+# Variáveis de ambiente padrão (podem ser sobrescritas no docker run com -e)
 ENV NODE_ENV=production \
-    PORT=3000
+    PORT=3000 \
+    DATABASE_URL=postgresql://placeholder \
+    JWT_SECRET=placeholder
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
