@@ -11,6 +11,7 @@ const { loggingMiddleware, errorLoggingMiddleware } = require('./src/middlewares
 
 // Log para verificar variáveis de ambiente
 console.log('=== INICIANDO VISTORIAPRO BACKEND ===');
+console.log('🔄 Build Version: 2026-02-22T04:00:00Z (com Swagger UI)');
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('PORT:', process.env.PORT);
 console.log('DATABASE_URL configurada:', process.env.DATABASE_URL ? 'SIM' : 'NÃO');
