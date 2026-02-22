@@ -13,14 +13,14 @@ const __dirname = path.dirname(__filename);
 const source = path.join(__dirname, '..', 'public', '_redirects');
 const dest = path.join(__dirname, '..', 'dist', '_redirects');
 
-if (fs.existsSync(source)) {
-  try {
+try {
+  if (fs.existsSync(source)) {
     fs.copyFileSync(source, dest);
-    console.log('✓ _redirects copiado para dist/');
-  } catch (err) {
-    console.error('Erro ao copiar _redirects:', err);
-    process.exit(1);
+    console.log('✓ public/_redirects copiado para dist/');
+  } else {
+    console.log('ℹ public/_redirects não encontrado (esperado em produção)');
   }
-} else {
-  console.log('ℹ public/_redirects não encontrado, pulando cópia');
+} catch (err) {
+  console.warn('⚠ Erro ao copiar _redirects (continuando):', err.message);
+  // Não falha o build, apenas warn
 }
