@@ -99,16 +99,19 @@ O **VistoriaPro** é uma solução completa e moderna para gestão de vistorias 
 
 ### Demo Online
 
-| Ambiente | URL |
-|----------|-----|
-| **Frontend (Demo)** | [https://vistoriapro.netlify.app](https://vistoriapro.netlify.app) |
-| **Backend API (Demo)** | Hospedado no Railway |
+| Ambiente | URL | Status |
+|----------|-----|--------|
+| **Frontend (Netlify)** | [https://vistoriapro.netlify.app](https://vistoriapro.netlify.app) | ✅ Online |
+| **Backend API (Railway)** | [https://vistoriapro-production.up.railway.app](https://vistoriapro-production.up.railway.app) | ✅ Online |
+| **Database (Supabase)** | PostgreSQL 16 | ✅ Conectado |
 
 > 🔑 **Credenciais de Demonstração:**
 > - **Email:** `admin1@empresa.com`
 > - **Senha:** `admin123`
 >
 > *Use essas credenciais para explorar todas as funcionalidades do sistema.*
+>
+> ✅ Autenticação validada em produção: JWT token + User data retornados com sucesso
 
 ### Fluxo do Usuário
 
