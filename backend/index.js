@@ -105,7 +105,12 @@ try {
     }
   ];
   
-  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  // Servir arquivos estáticos do swagger-ui primeiro
+  app.use('/docs', express.static(path.join(__dirname, '..', 'node_modules', 'swagger-ui-express', 'static')));
+  
+  // Depois registrar os middleware do swagger
+  app.use('/docs', swaggerUi.serve);
+  app.get('/docs/', swaggerUi.setup(swaggerSpec, {
     customCss: '.swagger-ui .topbar { display: none }',
     swaggerOptions: {
       persistAuthorization: true,
@@ -114,16 +119,21 @@ try {
     }
   }));
   
-  // Endpoint para servir a spec em JSON (alternativa)
-  app.get('/swagger.json', (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    res.send(swaggerSpec);
+  // Alias para /docs (sem barra)
+  app.get('/docs', (req, res) => {
+    res.redirect(301, '/docs/');
   });
   
-  console.log('✓ Swagger UI disponível em /docs');
+  // Endpoint para servir a spec em JSON
+  app.get('/swagger.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.json(swaggerSpec);
+  });
+  
+  console.log('✓ Swagger UI disponível em /docs/');
   console.log('✓ Spec JSON disponível em /swagger.json');
 } catch (error) {
-  console.error('Erro ao carregar swagger.yaml:', error.message);
+  console.error('❌ Erro ao carregar swagger.yaml:', error.message);
 }
 
 // Migration endpoint (temporário)
