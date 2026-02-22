@@ -1,6 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const fs = require('fs');
+const yaml = require('yaml');
 const pool = require('./src/config/database');
 const routes = require('./src/routes');
 const path = require('path');
@@ -85,6 +88,34 @@ app.get('/health', (req, res) => {
     timestamp: new Date().toISOString() 
   });
 });
+
+// ===== SWAGGER/OPENAPI DOCUMENTATION =====
+try {
+  const swaggerFile = fs.readFileSync(path.join(__dirname, 'swagger.yaml'), 'utf8');
+  const swaggerSpec = yaml.parse(swaggerFile);
+  
+  // Atualizar servidores dinamicamente
+  swaggerSpec.servers = [
+    {
+      url: process.env.NODE_ENV === 'production' 
+        ? 'https://vistoriapro-production.up.railway.app'
+        : 'http://localhost:3000',
+      description: process.env.NODE_ENV === 'production' ? 'Servidor de Produção' : 'Servidor Local'
+    }
+  ];
+  
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+    customCss: '.swagger-ui .topbar { display: none }',
+    swaggerOptions: {
+      persistAuthorization: true,
+      displayOperationId: true
+    }
+  }));
+  
+  console.log('✓ Swagger UI disponível em /docs');
+} catch (error) {
+  console.error('Erro ao carregar swagger.yaml:', error.message);
+}
 
 // Migration endpoint (temporário)
 app.get('/migrate/imoveis', async (req, res) => {
