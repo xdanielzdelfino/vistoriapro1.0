@@ -109,11 +109,19 @@ try {
     customCss: '.swagger-ui .topbar { display: none }',
     swaggerOptions: {
       persistAuthorization: true,
-      displayOperationId: true
+      displayOperationId: true,
+      url: '/swagger.json'
     }
   }));
   
+  // Endpoint para servir a spec em JSON (alternativa)
+  app.get('/swagger.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+  });
+  
   console.log('✓ Swagger UI disponível em /docs');
+  console.log('✓ Spec JSON disponível em /swagger.json');
 } catch (error) {
   console.error('Erro ao carregar swagger.yaml:', error.message);
 }
