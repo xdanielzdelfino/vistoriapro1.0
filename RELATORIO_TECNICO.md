@@ -3,7 +3,7 @@
 
 **Data:** 21 de fevereiro de 2026  
 **Projeto:** VistoriaPro - Sistema de Gestão de Vistorias Imobiliárias  
-**Repositório:** https://github.com/xdanielzdelfino/vistoriapro  
+**Repositório:** https://github.com/xdanielzdelfino/vistoriapro1.0  
 **Desenvolvedor:** Equipe de Desenvolvimento  
 
 ---
@@ -169,7 +169,7 @@ VistoriaPro é uma aplicação web moderna para gestão de **vistorias imobiliá
 - Trigger: Push para main ou develop
 - Multi-arch: linux/amd64, linux/arm64
 - Cache: GitHub Actions cache
-- Output: docker.io/xdanielzdelfino/vistoriapro:latest
+- Output: ghcr.io/xdanielzdelfino/vistoriapro1.0:latest
 ```
 
 #### **Estágio 4: Security Scan**
