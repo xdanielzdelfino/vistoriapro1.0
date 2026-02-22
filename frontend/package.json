@@ -11,7 +11,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "postbuild": "copy public\\_redirects dist\\_redirects"
+    "postbuild": "node scripts/postbuild.js"
   },
   "dependencies": {
     "@capacitor-community/speech-recognition": "^7.0.1",
