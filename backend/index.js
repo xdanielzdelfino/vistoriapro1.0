@@ -105,32 +105,69 @@ try {
     }
   ];
   
-  // Servir arquivos estáticos do swagger-ui primeiro
-  app.use('/docs', express.static(path.join(__dirname, 'node_modules', 'swagger-ui-express', 'static')));
-  
-  // Depois registrar os middleware do swagger
-  app.use('/docs', swaggerUi.serve);
-  app.get('/docs/', swaggerUi.setup(swaggerSpec, {
-    customCss: '.swagger-ui .topbar { display: none }',
-    swaggerOptions: {
-      persistAuthorization: true,
-      displayOperationId: true,
-      url: '/swagger.json'
-    }
-  }));
-  
-  // Alias para /docs (sem barra)
-  app.get('/docs', (req, res) => {
-    res.redirect(301, '/docs/');
-  });
-  
   // Endpoint para servir a spec em JSON
   app.get('/swagger.json', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.json(swaggerSpec);
   });
   
-  console.log('✓ Swagger UI disponível em /docs/');
+  // Página HTML customizada do Swagger UI via CDN
+  app.get('/docs/', (req, res) => {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(`
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VistoriaPro API - Documentação Swagger</title>
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@3/swagger-ui.css">
+  <style>
+    html {
+      box-sizing: border-box;
+      overflow: -moz-scrollbars-vertical;
+      overflow-y: scroll;
+    }
+    *,
+    *:before,
+    *:after {
+      box-sizing: inherit;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background: #fafafa;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div id="swagger-ui"></div>
+  <script src="https://unpkg.com/swagger-ui-dist@3/swagger-ui-bundle.js"></script>
+  <script src="https://unpkg.com/swagger-ui-dist@3/swagger-ui-standalone-preset.js"></script>
+  <script>
+    SwaggerUIBundle({
+      url: "/swagger.json",
+      dom_id: '#swagger-ui',
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIStandalonePreset
+      ],
+      layout: "StandaloneLayout",
+      persistAuthorization: true,
+    })
+  </script>
+</body>
+</html>
+    `);
+  });
+  
+  // Redirect /docs para /docs/
+  app.get('/docs', (req, res) => {
+    res.redirect(301, '/docs/');
+  });
+  
+  console.log('✓ Swagger UI disponível em /docs/ (via CDN)');
   console.log('✓ Spec JSON disponível em /swagger.json');
 } catch (error) {
   console.error('❌ Erro ao carregar swagger.yaml:', error.message);
