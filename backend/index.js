@@ -106,7 +106,7 @@ try {
   ];
   
   // Servir arquivos estáticos do swagger-ui primeiro
-  app.use('/docs', express.static(path.join(__dirname, '..', 'node_modules', 'swagger-ui-express', 'static')));
+  app.use('/docs', express.static(path.join(__dirname, 'node_modules', 'swagger-ui-express', 'static')));
   
   // Depois registrar os middleware do swagger
   app.use('/docs', swaggerUi.serve);
